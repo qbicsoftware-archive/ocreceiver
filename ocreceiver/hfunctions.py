@@ -1,8 +1,22 @@
 import re
 import subprocess
+import os
 
 # QBiC barcode regex
 BARCODE_REGEX = "Q[A-X0-9]{4}[0-9]{3}[A-X][A-X0-9]"
+
+
+def contains_valid_barcode(file_path):
+    """Check if a file contains a valid barcode
+    """
+    stem, _ = os.path.splitext(os.path.basename(file_path))
+    barcodes = re.findall(BARCODE_REGEX, stem)
+    valid_barcodes = [b for b in barcodes if is_valid_barcode(b)]
+    if len(barcodes) != len(valid_barcodes):
+        return False
+    if not barcodes:
+        return False
+    return True
 
 
 def is_valid_barcode(barcode):
