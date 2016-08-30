@@ -33,6 +33,10 @@ except ValueError as err:
     print('Something went horribly wrong!')
     print(err.message)
     sys.exit(1)
+except AttributeError:
+    import logutils.dictconfig
+    logutils.dictconfig.dictConfig(config)
+
 logger = logging.getLogger('logFile')
 logger.info('Started search for new incoming files in root directory:' +
             config['data_location'])
