@@ -12,7 +12,7 @@ if not hasattr(__builtins__, 'FileNotFoundError'):
     FileNotFoundError = IOError
 
 # Later it will be /etc/owncloud_receiver/ocr_config.yaml
-DEFAULT_CONFIG_LOC = "/home/sven1103/git/owncloud_receiver/ex_config.yaml"
+DEFAULT_CONFIG_LOC = sys.argv[1]
 
 # Defines the marker string
 MARKER = ".MARKER_is_finished_"

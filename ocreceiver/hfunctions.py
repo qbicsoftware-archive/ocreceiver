@@ -50,6 +50,7 @@ def create_marker_file(marker_flag, file_i, dir, logger):
     new_file = str.format('{0}/{1}{2}', dir, marker_flag, file_i)
     try:
         with open(new_file, 'w+'):
+            logger.info('Marker file created for {0}/{1}'.format(dir,file_i))
             pass
     except Exception as err:
         #print('Could not create marker file. Reason: \n{0}'.format(err))
