@@ -64,11 +64,12 @@ for root, _, files in os.walk(config["data_location"]):
         continue
     if files:
         for ifile in files:
-            # Skip .MARKER files
+            # valid barcode?
             if not contains_valid_barcode(ifile):
                 logger.warning(
                     '{0} does not carry a valid barcode'.format(ifile))
                 continue
+            # Skip .MARKER files
             if MARKER in ifile:
                 logger.warning(
                     'Marker file for {0}/{1} already exists.'.format(root, ifile))
