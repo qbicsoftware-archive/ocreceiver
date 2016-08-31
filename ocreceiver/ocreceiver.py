@@ -18,6 +18,10 @@ if len(sys.argv) != 2:
     sys.exit(1)
 DEFAULT_CONFIG_LOC = sys.argv[1]
 
+
+# Set the umask
+os.umask(0o007)
+
 # Defines the marker string
 MARKER = ".MARKER_is_finished_"
 
