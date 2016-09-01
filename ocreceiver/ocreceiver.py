@@ -64,6 +64,8 @@ for root, _, files in os.walk(config["data_location"]):
         continue
     if files:
         for ifile in files:
+            if is_marker_flag_file(ifile):
+                continue
             # valid barcode?
             if not contains_valid_barcode(ifile):
                 logger.warning(

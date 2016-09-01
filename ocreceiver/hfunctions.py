@@ -4,6 +4,16 @@ import os
 
 # QBiC barcode regex
 BARCODE_REGEX = "Q[A-X0-9]{4}[0-9]{3}[A-X][A-X0-9]"
+# MARKER file types
+ERROR_MARKER = "MARKER_error_"
+STARTED_MARKER = "MARKER_started_"
+
+
+def is_marker_flag_file(file_path):
+    """Checks if file is a marker flag file"""
+    if ERROR_MARKER in file_path or STARTED_MARKER in file_path:
+        return True
+    return False
 
 
 def contains_valid_barcode(file_path):
@@ -45,8 +55,9 @@ def is_currently_accessed(file_i, dir):
                                              dir, correct_file_name(file_i)) +
                                   '\"', shell=True)
     if exit_status == 0:
+        print("is 0")
         return True
-    return False
+    return True
 
 
 def correct_file_name(file_name):
