@@ -16,6 +16,18 @@ def is_marker_flag_file(file_path):
     return False
 
 
+def parent_has_barcode(path):
+    """Cheks, if the parent directory carries a
+    valid barcode in its path"""
+    barcodes = re.findall(BARCODE_REGEX, path)
+    valid_barcodes = [b for b in barcodes if is_valid_barcode(b)]
+    if len(barcodes) != len(valid_barcodes):
+        return False
+    if not barcodes:
+        return False
+    return True
+
+
 def contains_valid_barcode(file_path):
     """Check if a file contains a valid barcode
     """
@@ -55,9 +67,8 @@ def is_currently_accessed(file_i, dir):
                                              dir, correct_file_name(file_i)) +
                                   '\"', shell=True)
     if exit_status == 0:
-        print("is 0")
         return True
-    return True
+    return False
 
 
 def correct_file_name(file_name):
