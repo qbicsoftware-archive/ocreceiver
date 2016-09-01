@@ -73,6 +73,25 @@ def correct_file_name(file_name):
     return file_name
 
 
+def get_filenames_from_tsv(tsv_file):
+    """Extract the filenames from the tsv file
+    and returns them in a list. If something went wrong,
+    an empty list is returned."""
+    header_index = -1
+    file_names = []
+    with open(tsv_file, "r") as fh:
+        header_ls = fh.readline().split("\t")
+        for index, name in enumerate(header_ls):
+            if name.lower() == "filename":
+                header_index = index
+        if header_index == -1:
+            return file_names
+        for line in fh.read().splitlines():
+            content_ls = line.split("\t")
+            file_names.append(content_ls[header_index])
+    return file_names
+
+
 def create_marker_file(marker_flag, file_i, dir, logger):
     new_file = str.format('{0}/{1}{2}', dir, marker_flag, file_i)
     try:

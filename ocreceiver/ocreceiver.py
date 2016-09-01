@@ -87,18 +87,29 @@ for root, _, files in os.walk(config["data_location"]):
         continue
     # Check if directory contains a barcode
     if contains_valid_barcode(root):
+        file_ls = []
+        found_files_ls = []
         contains_incomplete_files = False
+        for sub, _, subfiles in os.walk(root):
+            for file in subfiles:
+                if ".tsv" in file:
+                    file_ls = get_filenames_from_tsv(sub + "/" + file)
         for sub, _, subfiles in os.walk(root):
             for ifile in subfiles:
                 if is_currently_accessed(ifile, sub):
                     contains_incomplete_files = True
+                elif ifile in file_ls:
+                    found_files_ls.append(ifile)
         if contains_incomplete_files:
             logger.warning("Folder {0} still contains files, that are not"
                            " completely written.".format(root))
-        else:
+        elif file_ls and len(found_files_ls) == len(file_ls):
             dirpath = os.path.dirname(root)
             dirname = os.path.basename(root)
             create_marker_file(MARKER, dirname, dirpath, logger)
+        else:
+            logger.warning("Folder {0} does not yet contain all files as"
+                           " expected from the tsv file.".format(root))
     else:
         do_marker_writing_job(files, root)
 
