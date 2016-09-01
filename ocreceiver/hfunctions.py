@@ -80,13 +80,14 @@ def get_filenames_from_tsv(tsv_file):
     header_index = -1
     file_names = []
     with open(tsv_file, "r") as fh:
-        header_ls = fh.readline().split("\t")
-        for index, name in enumerate(header_ls):
+        all_lines = fh.read().splitlines()
+        for index, name in enumerate(all_lines[0].rsplit("\t")):
             if name.lower() == "filename":
                 header_index = index
         if header_index == -1:
             return file_names
-        for line in fh.read().splitlines():
+        for line in all_lines[1:]:
+            print(line)
             content_ls = line.split("\t")
             file_names.append(content_ls[header_index])
     return file_names
