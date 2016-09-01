@@ -7,25 +7,16 @@ BARCODE_REGEX = "Q[A-X0-9]{4}[0-9]{3}[A-X][A-X0-9]"
 # MARKER file types
 ERROR_MARKER = "MARKER_error_"
 STARTED_MARKER = "MARKER_started_"
+OC_PART_FILE = "ocTransfer"
+FINISHED_MARKER = "MARKER_is_finished_"
 
 
 def is_marker_flag_file(file_path):
     """Checks if file is a marker flag file"""
-    if ERROR_MARKER in file_path or STARTED_MARKER in file_path:
+    if ERROR_MARKER in file_path or STARTED_MARKER in file_path or\
+                    FINISHED_MARKER in file_path:
         return True
     return False
-
-
-def parent_has_barcode(path):
-    """Cheks, if the parent directory carries a
-    valid barcode in its path"""
-    barcodes = re.findall(BARCODE_REGEX, path)
-    valid_barcodes = [b for b in barcodes if is_valid_barcode(b)]
-    if len(barcodes) != len(valid_barcodes):
-        return False
-    if not barcodes:
-        return False
-    return True
 
 
 def contains_valid_barcode(file_path):
@@ -66,7 +57,7 @@ def is_currently_accessed(file_i, dir):
                                   str.format('lsof {0}/{1} > /dev/null',
                                              dir, correct_file_name(file_i)) +
                                   '\"', shell=True)
-    if exit_status == 0:
+    if exit_status == 0 or OC_PART_FILE in file_i:
         return True
     return False
 
